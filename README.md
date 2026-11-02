@@ -44,6 +44,31 @@ git version 2.53.0
 - [x] 볼륨 영속성 검증
 - [ ] VS Code GitHub 연동 증거
 
+## 검증 방법 요약
+
+| 항목 | 사용한 명령 | 확인한 것 | 결과 위치 |
+|---|---|---|---|
+| 터미널 기본 조작 | `pwd`, `ls -la`, `mkdir`, `cp`, `mv`, `rm`, `cat` | 파일/폴더 생성·복사·이동·삭제 결과 | 4-3 |
+| 권한 변경 | `ls -l`, `ls -ld`, `chmod 600/700/755/644` | 변경 전/후 권한 문자열 비교 | 4-4 |
+| Docker 설치/점검 | `docker --version`, `docker info` | 클라이언트·엔진(Server Version) 동작 | 4-5 |
+| Docker 기본 운영 | `docker pull/images/ps/logs/stats/stop/rm` | 이미지·컨테이너 상태, 로그, 자원 사용량 | 4-6 |
+| 컨테이너 실행 | `docker run hello-world`, `docker run -it ubuntu bash` | hello-world 출력, 컨테이너 내부 명령 실행 | 4-7 |
+| attach vs exec | `docker exec`, `docker attach`, `docker ps` | exit 후 컨테이너 유지/종료 차이 | 4-7 |
+| 커스텀 이미지 | `docker build -t my-web:1.0 .` | 빌드 성공, 이미지 생성 | 4-8 |
+| 포트 매핑 | `docker run -p 8080:80`, `-p 8081:80`, `curl` | 호스트 포트로 접속 시 응답, 브라우저 화면 | 4-9 |
+| 바인드 마운트 | `docker run -v ...`, `sed`, `curl` | 호스트 파일 수정이 컨테이너에 즉시 반영 | 4-10 |
+| 볼륨 영속성 | `docker volume create`, `docker run -v mydata:/data` | 컨테이너 삭제 후에도 데이터 유지 | 4-11 |
+| Git 설정 | `git config --list` | 사용자 이름·이메일·기본 브랜치 | 4-1 |
+| GitHub 연동 | `gh auth status`, `git push` | 로그인 상태, 원격 저장소로 push 성공 | 4-2 |
+
+## 재현 방법 및 주의사항
+
+- 환경: Windows + WSL(Ubuntu), Docker Desktop(WSL integration에서 Ubuntu 활성화), Git, GitHub CLI(`gh`)
+- 실행 전: Docker Desktop이 켜져 있어야 하고, `docker --version`과 `docker info`가 정상이어야 한다.
+- 실행 순서: 저장소를 받은 뒤 `docker-workstation` 폴더에서 `docker build -t my-web:1.0 .` → `docker run -d -p 8080:80 --name my-web-8080 my-web:1.0` → `curl http://localhost:8080` 순서로 따라 하면 4-8, 4-9를 재현할 수 있다.
+- 작업 컴퓨터: 학원 PC 2대를 사용했다(5F-156 사용자 jisookkim0809, 5F-158 사용자 wymm01). 터미널 프롬프트의 사용자명은 컴퓨터마다 다르며, GitHub 계정은 두 곳 모두 jisookkim0809이다.
+- 포트: 8080, 8081, 8082를 사용했다. 이미 사용 중이면 다른 포트로 바꿔 실행한다.
+
 ## 4) 수행 로그 및 검증
 
 ### 4-1. Git 설정
