@@ -453,8 +453,42 @@ $ curl http://localhost:8082
 ### 4-11. Docker 볼륨 영속성
 
 ```bash
-(볼륨 생성 → 컨테이너 연결 → 데이터 기록 → 컨테이너 삭제 → 새 컨테이너로 데이터 확인)
+$ docker volume create mydata
+mydata
+
+$ docker volume ls
+DRIVER    VOLUME NAME
+local     mydata
+
+$ docker run -d --name vol-test -v mydata:/data ubuntu sleep infinity
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+f3f25b84a7d7: Pull complete 
+edafa32f5d9e: Pull complete 
+21594acc2d8b: Download complete 
+Digest: sha256:6a06111c3b0a8600feadb270aec771dc239bf407b25625f93f44ab00e11f4d3c
+Status: Downloaded newer image for ubuntu:latest
+30ac91117c90b871b8f52037b72014622aff0378d2090d7603ded196f0384f4a
+
+$ docker exec vol-test bash -c "echo hi > /data/hello.txt && cat /data/hello.txt"
+hi
+
+$ docker rm -f vol-test
+vol-test
+
+$ docker ps -a
+CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS                                     NAMES
+778f28348489   my-web:1.0   "/docker-entrypoint.…"   19 minutes ago   Up 19 minutes   0.0.0.0:8082->80/tcp, [::]:8082->80/tcp   my-web-bind
+8e08d39caaef   my-web:1.0   "/docker-entrypoint.…"   55 minutes ago   Up 55 minutes   0.0.0.0:8081->80/tcp, [::]:8081->80/tcp   my-web-8081
+99715c2d38e3   my-web:1.0   "/docker-entrypoint.…"   57 minutes ago   Up 57 minutes   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   my-web-8080
+
+$ docker run -d --name vol-test2 -v mydata:/data ubuntu sleep infinity
+78788b892bffc28f31a1993d5fbc7d42b99ef19b769abd8068d407df6001f236
+
+$ docker exec vol-test2 bash -c "cat /data/hello.txt"
+hi
 ```
+- vol-test 컨테이너를 삭제한 뒤 새로 만든 vol-test2 컨테이너에서도 /data/hello.txt의 내용(hi)이 그대로 남아 있었다. 볼륨(mydata)이 컨테이너와 별개로 데이터를 보관하기 때문이다.
 
 ## 5) 개념 정리
 
