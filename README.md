@@ -13,10 +13,10 @@
 
 | 항목 | 내용 |
 |---|---|
-| OS | Windows + WSL Ubuntu (버전: `lsb_release -d` 결과) |
-| Shell / Terminal | bash / VS Code 터미널 (WSL: Ubuntu) |
-| Docker | (`docker --version` 결과) |
-| Git | (`git --version` 결과) |
+| OS | Windows + WSL Ubuntu 26.04.1 LTS |
+| Shell / Terminal | bash / Ubuntu 터미널 (WSL) |
+| Docker | 29.9.2 |
+| Git | 2.53.0 |
 
 ```bash
 $ lsb_release -d
