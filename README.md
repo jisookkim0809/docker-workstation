@@ -42,7 +42,7 @@ git version 2.53.0
 - [x] 포트 매핑 접속 (8080, 8081)
 - [x] 바인드 마운트 반영 확인
 - [x] 볼륨 영속성 검증
-- [ ] VS Code GitHub 연동 증거
+- [x] VS Code GitHub 연동 증거
 
 ## 검증 방법 요약
 
@@ -113,6 +113,8 @@ branch 'main' set up to track 'origin/main'.
 ![gh auth status](images/gh-auth-status.png)
 ![git push](images/git-push.png)
 ![GitHub 저장소 화면](images/github-repo.png)
+![VS Code GitHub 연동](images/vscode-github.png)
+![VS Code Source Control](images/vscode-source-control.png)
 
 ### 4-3. 터미널 기본 조작 로그
 
