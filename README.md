@@ -504,20 +504,42 @@ hi
 
 ### 사례 1: sudo 비밀번호 인증 실패
 
-- 문제: `sudo apt update` 실행 시 비밀번호 인증이 반복 실패
-- 원인 가설: 설정한 비밀번호와 입력한 값이 다름
-- 확인: (실제 확인한 내용)
-- 해결: (실제 해결 방법)
+- 문제: `sudo apt update` 실행 시 비밀번호 인증이 3번 반복 실패했다.
+- 원인 가설: 설정한 비밀번호와 입력한 값이 다르거나, 한/영 상태 때문에 다르게 입력됨.
+- 확인: 입력한 비밀번호가 맞다고 생각했지만 같은 결과가 반복되었다. 비밀번호를 기억하지 못하는 경우로 보고 재설정했다.
+- 해결: PowerShell에서 `wsl -u root passwd 사용자명`으로 비밀번호를 새로 정했다. 이후 `sudo apt update`가 성공했다.
 
 ### 사례 2: git push 시 인증 요구
 
-- 문제: `git push` 시 Username/Password를 요구
-- 원인 가설: WSL 안의 Git에 GitHub 인증 정보가 없음
-- 확인: (실제 확인한 내용)
-- 해결: `gh auth login`으로 브라우저 인증 후 push 성공
+- 문제: `git push` 시 Username/Password를 요구했다.
+- 원인 가설: WSL 안의 Git에 GitHub 인증 정보가 없음.
+- 확인: GitHub는 비밀번호로 push를 받지 않는다. 터미널에 비밀번호를 직접 입력하지 않고 다른 방법을 찾았다.
+- 해결: `sudo apt install gh`로 GitHub CLI를 설치하고 `gh auth login`으로 브라우저 인증을 한 뒤 push에 성공했다.
 
-### 사례 3 (선택): `ls -1`과 `ls -l` 혼동
+### 사례 3: git push 거절 (non-fast-forward)
 
-- 문제: 권한 확인 시 권한 정보가 출력되지 않음
-- 원인 가설: 옵션이 숫자 1이었음
-- 해결: 소문자 `l`로 다시 실행
+- 문제: `git push`가 `rejected ... (fetch first)`로 거절되었다.
+- 원인 가설: GitHub에 내 컴퓨터에 없는 커밋이 있음. GitHub 웹에서 README를 직접 수정한 커밋이 원인이었다.
+- 확인: `git fetch`, `git log --oneline --graph --all`, `git show`로 GitHub 쪽 변경(제목 한 줄 삭제)을 확인했다.
+- 해결: `git pull --no-rebase`로 합쳤고, README 맨 위에서 충돌(`CONFLICT`)이 나서 VS Code에서 Incoming Change를 선택해 충돌 표시를 정리한 뒤 `git add`, `git commit`, `git push`를 했다. 이후에는 한쪽에서만 수정하기로 했다.
+
+### 사례 4: docker 명령이 WSL에서 인식되지 않음
+
+- 문제: 다른 컴퓨터의 Ubuntu에서 `docker` 실행 시 "could not be found in this WSL 2 distro" 오류가 났다.
+- 원인 가설: Docker Desktop은 있으나 WSL(Ubuntu)과 연결(integration)이 꺼져 있음.
+- 확인: 오류 메시지가 Docker Desktop의 WSL integration 설정을 안내했다.
+- 해결: Docker Desktop의 Settings → Resources → WSL integration에서 Ubuntu를 켜고 Apply & restart를 했다. 이후 `docker --version`과 `docker info`가 정상 동작했다.
+
+### 사례 5: 컨테이너 이름 충돌
+
+- 문제: `docker run --name my-web-8080 ...`을 다시 실행하자 `Conflict. The container name ... is already in use` 오류가 났다.
+- 원인 가설: 같은 이름의 컨테이너가 이미 실행 중임.
+- 확인: `docker ps`로 `my-web-8080`이 이미 `Up` 상태임을 확인했다.
+- 해결: 이미 실행 중이므로 `docker run`을 다시 하지 않고 `docker ps`와 `curl`로 확인만 했다. 필요하면 `docker rm -f 이름`으로 지우고 다시 만들 수 있다.
+
+### 사례 6: ls -1과 ls -l 혼동
+
+- 문제: 권한 확인 시 권한 정보(`-rw-r--r--`)가 출력되지 않았다.
+- 원인 가설: `ls -l`(소문자 엘)이 아니라 `ls -1`(숫자 1)을 입력했다.
+- 확인: 출력에 파일 이름만 한 줄씩 나왔다. `-1`은 이름만 한 줄씩 보여 주는 옵션이다.
+- 해결: 소문자 `l`로 `ls -l`, `ls -ld`를 다시 실행해 권한 변경 전/후를 확인했다.
