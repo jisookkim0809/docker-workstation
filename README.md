@@ -166,7 +166,7 @@ $ docker info
 ### 4-6. Docker 기본 운영 명령
 
 ```bash
-)$ docker pull nginx:alpine
+$ docker pull nginx:alpine
 alpine: Pulling from library/nginx
 b9b388a21ecf: Pull complete 
 7b229517ed22: Pull complete 
