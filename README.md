@@ -35,9 +35,9 @@ git version 2.53.0
 - [x] GitHub 저장소 생성 및 `gh` 로그인, push 연동
 - [x] 터미널 기본 조작 (이동/생성/복사/이름변경/이동/삭제)
 - [x] 권한 변경 실습 (파일 1개, 디렉토리 1개)
-- [ ] Docker 설치/점검 (`docker --version`, `docker info`)
-- [ ] Docker 기본 운영 명령 (images, ps, logs, stats)
-- [ ] hello-world / ubuntu 컨테이너 실행
+- [x] Docker 설치/점검 (`docker --version`, `docker info`)
+- [x] Docker 기본 운영 명령 (images, ps, logs, stats)
+- [x] hello-world / ubuntu 컨테이너 실행
 - [ ] Dockerfile 기반 커스텀 이미지 빌드/실행
 - [ ] 포트 매핑 접속 (8080, 8081)
 - [ ] 바인드 마운트 반영 확인
