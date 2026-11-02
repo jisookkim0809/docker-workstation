@@ -20,13 +20,13 @@
 
 ```bash
 $ lsb_release -d
-(여기에 출력 붙여넣기)
+Description:    Ubuntu 26.04.1 LTS
 
 $ docker --version
-(여기에 출력 붙여넣기)
+Docker version 29.9.2, build a82e528
 
 $ git --version
-(여기에 출력 붙여넣기)
+git version 2.53.0
 ```
 
 ## 3) 수행 체크리스트
