@@ -134,40 +134,41 @@ a.txt  empty.txt  testdir
 
 ```bash
 $ ls -l a.txt
-(변경 전 출력, 예: -rw-r--r--)
+-rw-r--r-- 1 jisookkim0809 jisookkim0809 6 Oct 29 15:50 a.txt
 
 $ chmod 600 a.txt
 $ ls -l a.txt
-(변경 후 출력, 예: -rw-------)
+-rw------- 1 jisookkim0809 jisookkim0809 6 Oct 29 15:50 a.txt
 
 $ chmod 644 a.txt
 $ ls -l a.txt
-(원복 출력)
+-rw-r--r-- 1 jisookkim0809 jisookkim0809 6 Oct 29 15:50 a.txt
 ```
 
 디렉토리:
 
 ```bash
+$ chmod 755 testdir
 $ ls -ld testdir
-(변경 전 출력, 예: drwxr-xr-x)
+drwxr-xr-x 2 jisookkim0809 jisookkim0809 4096 Oct 29 15:58 testdir
 
 $ chmod 700 testdir
 $ ls -ld testdir
-(변경 후 출력, 예: drwx------)
+drwx------ 2 jisookkim0809 jisookkim0809 4096 Oct 29 15:58 testdir
 
 $ chmod 755 testdir
 $ ls -ld testdir
-(원복 출력)
+drwxr-xr-x 2 jisookkim0809 jisookkim0809 4096 Oct 29 15:58 testdir
 ```
 
 ### 4-5. Docker 설치 및 점검
 
 ```bash
 $ docker --version
-(출력)
+Docker version 29.9.2, build a82e528
 
-$ docker info
-(출력 - 길면 핵심 부분 발췌)
+$ docker info | grep -i "server version"
+ Server Version: 29.9.2
 ```
 
 ### 4-6. Docker 기본 운영 명령
