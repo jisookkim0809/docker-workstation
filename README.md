@@ -49,10 +49,17 @@ $ git --version
 ### 4-1. Git 설정
 
 ```bash
+$ git --version
+git version 2.53.0
+
+$ git config --global init.defaultBranch main
 $ git config --list
-git config --list
-user.email=jisookkim0809@gmail.com
+init.defaultbranch=main
+remote.origin.url=https://github.com/jisookkim0809/docker-workstation.git
+branch.main.remote=origin
+branch.main.merge=refs/heads/main
 user.name=jisookkim0809
+user.email=jisookkim0809@gmail.com
 ```
 
 ### 4-2. GitHub 로그인 및 저장소 연동
