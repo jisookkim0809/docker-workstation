@@ -325,31 +325,79 @@ attach와 exec 차이 관찰 메모:
 
 ### 4-8. 커스텀 이미지 (Dockerfile)
 
-- 선택한 베이스: `nginx:alpine`
-- 커스텀 포인트와 목적:
-  - `LABEL`: (목적)
-  - `ENV APP_ENV=dev`: (목적)
-  - `COPY app/ /usr/share/nginx/html/`: (목적)
+선택한 베이스: nginx:alpine
+
+커스텀 포인트와 목적:
+- LABEL: 이미지에 이름과 설명을 붙여 어떤 이미지인지 알아볼 수 있게 함
+- ENV APP_ENV=dev: 환경 변수로 실행 모드를 구분 (설정과 코드를 분리)
+- COPY app/ /usr/share/nginx/html/: nginx 기본 페이지를 내가 만든 index.html로 교체
 
 ```dockerfile
-(Dockerfile 내용 붙여넣기)
+FROM nginx:alpine
+LABEL org.opencontainers.image.title="my-custom-nginx"
+ENV APP_ENV=dev
+COPY app/ /usr/share/nginx/html/
 ```
 
 ```bash
 $ docker build -t my-web:1.0 .
-(출력)
+[+] Building 1.2s (7/7) FINISHED                                                         docker:default
+ => [internal] load build definition from Dockerfile                                               0.0s
+ => => transferring dockerfile: 161B                                                               0.0s
+ => [internal] load metadata for docker.io/library/nginx:alpine                                    0.8s
+ => [internal] load .dockerignore                                                                  0.0s
+ => => transferring context: 2B                                                                    0.0s
+ => [internal] load build context                                                                  0.0s
+ => => transferring context: 59B                                                                   0.0s
+ => [1/2] FROM docker.io/library/nginx:alpine@sha256:785835ea65db4bba6f021acc0f3be91b0fef76a53fe4  0.0s
+ => => resolve docker.io/library/nginx:alpine@sha256:785835ea65db4bba6f021acc0f3be91b0fef76a53fe4  0.0s
+ => CACHED [2/2] COPY app/ /usr/share/nginx/html/                                                  0.0s
+ => exporting to image                                                                             0.1s
+ => => exporting layers                                                                            0.0s
+ => => exporting manifest sha256:026945fa1ada575d8b06ad587a73d216d2d408e6b8400c99a846f224d897d59d  0.0s
+ => => exporting config sha256:c01cb0ee7787dbce56c26166dee1df162a9b53ac15fad3cf627c9fa7a51c82e8    0.0s
+ => => exporting attestation manifest sha256:1931864f4d371d643e2c68ea0100521e4f9e93296fa96b0961cd  0.0s
+ => => exporting manifest list sha256:f927733979c04121371d3f9f969ce3efc11b6659340669406d00fa8b371  0.0s
+ => => naming to docker.io/library/my-web:1.0                                                      0.0s
+ => => unpacking to docker.io/library/my-web:1.0                                                   0.0s 
 ```
 
 ### 4-9. 포트 매핑 접속
 
 ```bash
 $ docker run -d -p 8080:80 --name my-web-8080 my-web:1.0
-$ curl http://localhost:8080
-(출력)
-
 $ docker run -d -p 8081:80 --name my-web-8081 my-web:1.0
+
+$ docker ps
+CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS                                     NAMES
+8e08d39caaef   my-web:1.0   "/docker-entrypoint.…"   13 minutes ago   Up 13 minutes   0.0.0.0:8081->80/tcp, [::]:8081->80/tcp   my-web-8081
+99715c2d38e3   my-web:1.0   "/docker-entrypoint.…"   14 minutes ago   Up 14 minutes   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   my-web-8080
+
+$ curl http://localhost:8080
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>My Docker Web</title>
+</head>
+<body>
+  <h1>Hello Docker!</h1>
+  <p>version 1</p>
+</body>
+</html>
+
 $ curl http://localhost:8081
-(출력)
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>My Docker Web</title>
+</head>
+<body>
+  <h1>Hello Docker!</h1>
+  <p>version 1</p>
+</body>
+</html>
 ```
 
 ![localhost:8080 접속](images/port-8080.png)
