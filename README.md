@@ -406,7 +406,48 @@ $ curl http://localhost:8081
 ### 4-10. 바인드 마운트
 
 ```bash
-(실행 명령 + 호스트 파일 변경 전/후 curl 결과)
+$ docker run -d -p 8082:80 --name my-web-bind -v "$(pwd)/app":/usr/share/nginx/html my-web:1.0
+
+$ sed -i 's/version 2 (bind mount)/version 1/' app/index.html
+$ curl http://localhost:8082
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>My Docker Web</title>
+</head>
+<body>
+  <h1>Hello Docker!</h1>
+  <p>version 1</p>
+</body>
+</html>
+
+$ sed -i 's/version 1/version 2 (bind mount)/' app/index.html
+$ cat app/index.html
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>My Docker Web</title>
+</head>
+<body>
+  <h1>Hello Docker!</h1>
+  <p>version 2 (bind mount)</p>
+</body>
+</html>
+
+$ curl http://localhost:8082
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>My Docker Web</title>
+</head>
+<body>
+  <h1>Hello Docker!</h1>
+  <p>version 2 (bind mount)</p>
+</body>
+</html>
 ```
 
 ### 4-11. Docker 볼륨 영속성
