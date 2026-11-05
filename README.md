@@ -66,7 +66,7 @@ git version 2.53.0
 - 환경: Windows + WSL(Ubuntu), Docker Desktop(WSL integration에서 Ubuntu 활성화), Git, GitHub CLI(`gh`)
 - 실행 전: Docker Desktop이 켜져 있어야 하고, `docker --version`과 `docker info`가 정상이어야 한다.
 - 실행 순서: 저장소를 받은 뒤 `docker-workstation` 폴더에서 `docker build -t my-web:1.0 .` → `docker run -d -p 8080:80 --name my-web-8080 my-web:1.0` → `curl http://localhost:8080` 순서로 따라 하면 4-8, 4-9를 재현할 수 있다.
-- 작업 컴퓨터: 학원 PC 2대를 사용했다(5F-156 사용자 jisookkim0809, 5F-158 사용자 wymm01). 터미널 프롬프트의 사용자명은 컴퓨터마다 다르며, GitHub 계정은 두 곳 모두 jisookkim0809이다.
+- 작업 컴퓨터: 교육장 PC 2대를 사용했다(5F-156 사용자 jisookkim0809, 5F-158 사용자 wymm01). 터미널 프롬프트의 사용자명은 컴퓨터마다 다르며, GitHub 계정은 두 곳 모두 jisookkim0809이다.
 - 포트: 8080, 8081, 8082를 사용했다. 이미 사용 중이면 다른 포트로 바꿔 실행한다.
 
 ## 4) 수행 로그 및 검증
